@@ -1,0 +1,38 @@
+{
+  "name": "express-typescript-api",
+  "version": "1.0.0",
+  "description": "simple express typescript api",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "tsx watch ./src/index.ts",
+    "start": "tsx ./src/index.ts",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "build:node": "tsc && tsc-alias",
+    "build:docker": "docker build -t express-typescript .",
+    "docs:web": "typedoc",
+    "docs:msword": "pandoc ./specs/*.md -f gfm+rebase_relative_paths --reference-doc=./specs/ref.docx -o ./docs/api.docx"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "tsc-alias": "^1.8.8",
+    "typedoc": "^0.25.3",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "prettier": "^3.0.3",
+    "tsx": "^3.14.0"
+  },
+  "typedocOptions": {
+    "entryPoints": [
+      "./src/**/*.ts"
+    ],
+    "out": "./docs/typedoc"
+  }
+}

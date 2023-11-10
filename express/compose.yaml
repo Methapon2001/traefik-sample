@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  express-typescript:
+    image: express-typescript
+    networks:
+      - dev
+    ports:
+      - 3000:80
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.express-typescript.rule=Host(`app.local`)
+
+networks:
+  dev:
+    external: true
