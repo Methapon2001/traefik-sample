@@ -1,11 +1,12 @@
 {
   "name": "express-typescript-api",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "simple express typescript api",
   "main": "./src/index.ts",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "tsx watch ./src/index.ts",
-    "start": "tsx ./src/index.ts",
+    "start": "node ./dist/index.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "build:node": "tsc && tsc-alias",

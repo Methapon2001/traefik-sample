@@ -1,22 +1,26 @@
-FROM node:20-alpine as build-stage
+FROM node:20-slim as base
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+RUN corepack enable
 
 WORKDIR /app
 
 COPY . .
 
-RUN yarn install
-RUN yarn run build:node
+FROM base AS deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-FROM node:20-alpine as prod-stage
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build:node
 
-WORKDIR /app
-
-COPY --from=build-stage /app/dist /app/dist
-COPY --from=build-stage /app/public /app/public
-COPY --from=build-stage /app/package.json /app/package.json
-
-RUN yarn install --production
+FROM base as prod
+COPY --from=deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+COPY --from=base /app/public /app/public
 
 EXPOSE 80
 
-CMD ["node", "dist/index.js"]
+CMD ["pnpm", "start"]
